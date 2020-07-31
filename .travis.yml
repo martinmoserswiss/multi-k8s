@@ -15,11 +15,11 @@ after_success:
     - docker build -t martinmoserswiss/multi-server ./server
     - docker build -t martinmoserswiss/multi-worker ./worker
 
-# Log in to the docker CLI
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Log in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
-# Take those images and push them to docker hub
-- docker push martinmoserswiss/multi-client
-- docker push martinmoserswiss/multi-nginx
-- docker push martinmoserswiss/multi-server
-- docker push martinmoserswiss/multi-worker
+    # Take those images and push them to docker hub
+    - docker push martinmoserswiss/multi-client
+    - docker push martinmoserswiss/multi-nginx
+    - docker push martinmoserswiss/multi-server
+    - docker push martinmoserswiss/multi-worker
