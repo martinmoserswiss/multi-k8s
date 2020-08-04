@@ -1,37 +1,36 @@
 sudo: required
+language: generic
 
 services:
-    - docker
+  - docker
 
 before_install:
-    - docker build -t martinmoserswiss/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t martinmoserswiss/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-    - docker run -e CI=true martinmoserswiss/react-test npm run test
+  - docker run martinmoserswiss/react-test npm test -- --coverage
 
 after_success:
-    - docker build -t martinmoserswiss/multi-client ./client
-    - docker build -t martinmoserswiss/multi-nginx ./nginx
-    - docker build -t martinmoserswiss/multi-server ./server
-    - docker build -t martinmoserswiss/multi-worker ./worker
-
-    # Log in to the docker CLI
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-    # Take those images and push them to docker hub
-    - docker push martinmoserswiss/multi-client
-    - docker push martinmoserswiss/multi-nginx
-    - docker push martinmoserswiss/multi-server
-    - docker push martinmoserswiss/multi-worker
+  - docker build -t martinmoserswiss/multi-client ./client
+  - docker build -t martinmoserswiss/multi-nginx ./nginx
+  - docker build -t martinmoserswiss/multi-server ./server
+  - docker build -t martinmoserswiss/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push martinmoserswiss/multi-client
+  - docker push martinmoserswiss/multi-nginx
+  - docker push martinmoserswiss/multi-server
+  - docker push martinmoserswiss/multi-worker
 
 deploy:
-    provider: elasticbeanstalk
-    region: us-east-2
-    app: multi-docker
-    env: MultiDocker-env
-    bucket_name: elasticbeanstalk-us-east-2-807155379937
-    bucket_path: docker-multi
-    on:
-        branch: master
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_KEY
+  provider: elasticbeanstalk
+  region: us-west-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-us-west-1-306476627547
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
