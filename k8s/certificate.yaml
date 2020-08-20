@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: jumos-ch-tls
+spec:
+  secretName: jumos-ch
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: jumos.ch
+  dnsNames:
+    - jumos.ch
+    - www.jumos.ch
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - jumos.ch
+          - www.jumos.ch
