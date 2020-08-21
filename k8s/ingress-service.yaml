@@ -11,8 +11,8 @@ metadata:
 spec:
   tls:
     - hosts:
-      - jumos.ch
-      - www.jumos.ch
+        - jumos.ch
+        - www.jumos.ch
       serviceName: jumos-ch
   rules:
     - host: jumos.ch
